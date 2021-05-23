@@ -1,38 +1,46 @@
 const express = require("express");
 const helmet = require("helmet");
 
-const Users = require("../data/db.js");
+const Users = require("../data/userdb.js");
 
 const server = express();
 
 server.use(helmet());
 server.use(express.json());
 
-// server.get("/", async (req, res) => {
-//   try {
-//     const shoutouts = await Users("shoutouts");
-//     const messageOfTheDay = process.env.MOTD || "Hello World!";
-//     res.status(200).json({ motd: messageOfTheDay, shoutouts });
-//   } catch (error) {
-//     console.error("\nERROR", error);
-//     res.status(500).json({ error: "Cannot get the shoutouts" });
-//   }
-// });
+// User endpoints below
 
-// server.post("/", async (req, res) => {
-//   try {
-//     const [id] = await Users("shoutouts").insert(req.body);
-//     const shoutouts = await Users("shoutouts");
+server.get("/", (req, res) => {
+  Users.find()
+    .then((users) => {
+      res.status(200).json(users);
+    })
+    .catch(() => {
+      res.status(500).json({
+        errorMessage: "The users information could not be retrieved.",
+      });
+    });
+});
 
-//     const messageOfTheDay = process.env.MOTD || "Hello World!";
-//     res.status(201).json({ motd: messageOfTheDay, shoutouts });
-//   } catch (error) {
-//     console.error("\nERROR", error);
-//     res.status(500).json({ error: "Cannot add the shoutout" });
-//   }
-// });
+server.get("/:id", (req, res) => {
+  Users.findById(req.params.id)
+    .then((user) => {
+      if (user) {
+        res.status(200).json(user);
+      } else {
+        res
+          .status(404)
+          .json({ message: "The user with the specified ID does not exist." });
+      }
+    })
+    .catch(() => {
+      res
+        .status(500)
+        .json({ errorMessage: "The user information could not be retrieved." });
+    });
+});
 
-server.post("/api/users", (req, res) => {
+server.post("/", (req, res) => {
   const { name, bio } = req.body;
 
   if (!name || !bio) {
@@ -53,37 +61,7 @@ server.post("/api/users", (req, res) => {
   }
 });
 
-server.get("/api/users", (req, res) => {
-  Users.find()
-    .then((users) => {
-      res.status(200).json(users);
-    })
-    .catch(() => {
-      res.status(500).json({
-        errorMessage: "The users information could not be retrieved.",
-      });
-    });
-});
-
-server.get("/api/users/:id", (req, res) => {
-  Users.findById(req.params.id)
-    .then((user) => {
-      if (user) {
-        res.status(200).json(user);
-      } else {
-        res
-          .status(404)
-          .json({ message: "The user with the specified ID does not exist." });
-      }
-    })
-    .catch(() => {
-      res
-        .status(500)
-        .json({ errorMessage: "The user information could not be retrieved." });
-    });
-});
-
-server.delete("/api/users/:id", (req, res) => {
+server.delete("/:id", (req, res) => {
   Users.remove(req.params.id)
     .then((count) => {
       if (count && count > 0) {
@@ -101,7 +79,7 @@ server.delete("/api/users/:id", (req, res) => {
     });
 });
 
-server.put("/api/users/:id", (req, res) => {
+server.put("/:id", (req, res) => {
   const { name, bio } = req.body;
 
   if (!name || !bio) {

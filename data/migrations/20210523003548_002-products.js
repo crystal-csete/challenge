@@ -4,6 +4,8 @@ exports.up = function (knex, Promise) {
 
     products.string("name", 128).unique().notNullable();
     products.decimal("price").notNullable();
+
+    products.timestamps(true, true);
   });
 };
 

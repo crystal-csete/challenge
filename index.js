@@ -1,16 +1,15 @@
 require("dotenv").config();
+const express = require("express");
 
-// const express = require("express");
+// const server = require("./api/apiRoutes.js");
 
-// const apiRoutes = require("./api/apiRoutes");
+const apiRoutes = require("./api/apiRoutes");
+const productRoutes = require("./products/productRoutes");
 
-const server = require("./api/apiRoutes.js");
+const server = express();
 
-// server.use("/users", apiRoutes);
-// server.use("/races", apiRoutes);
-// server.use("/villians", apiRoutes);
-
-// server.use("/", (req, res) => res.send("API up and running!"));
+server.use("/api", apiRoutes);
+server.use("/products", productRoutes);
 
 const port = process.env.PORT || 5000;
 
