@@ -1,19 +1,26 @@
 {
   "name": "challenge",
   "version": "1.0.0",
-  "description": "- Building a RESTful API.\r - Performing CRUD operations.\r - Writing API endpoints.",
+  "description": "API Challenge",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "server": "nodemon index.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/crystal-csete/challenge.git"
+  },
   "keywords": [],
-  "author": "",
+  "author": "Crystal Csete",
   "license": "ISC",
   "devDependencies": {
     "nodemon": "^2.0.7"
   },
   "dependencies": {
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "helmet": "^4.6.0",
     "knex": "^0.95.6",
     "sqlite3": "^5.0.2"
   }

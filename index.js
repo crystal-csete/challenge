@@ -1,11 +1,19 @@
-// implement your API here
+require("dotenv").config();
 
-const express = require("express");
+// const express = require("express");
 
-const server = express();
+// const apiRoutes = require("./api/apiRoutes");
 
-server.get("/", (req, res) => {
-  res.send("Hello World");
+const server = require("./api/apiRoutes.js");
+
+// server.use("/users", apiRoutes);
+// server.use("/races", apiRoutes);
+// server.use("/villians", apiRoutes);
+
+// server.use("/", (req, res) => res.send("API up and running!"));
+
+const port = process.env.PORT || 5000;
+
+server.listen(port, () => {
+  console.log(`\n*** API on PORT ${port} ***\n`);
 });
-
-server.listen(8000, () => console.log("API running on port 8000"));
